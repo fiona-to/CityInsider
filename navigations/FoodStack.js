@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { SimpleLineIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import Food from "../screens/Food";
 import Nodes from "../screens/Nodes";
@@ -11,18 +11,19 @@ import * as Size from "../_constant/size";
 
 const Stack = createStackNavigator();
 
-const FoodStack = () => {
+const FoodStack = (props) => {
   return (
     <Stack.Navigator>
       <Stack.Screen
         name="Food"
         component={Food}
+        initialParams={{ catId: props.route.params.catId }}
         options={(props) => {
           return {
             headerTitle: "Ăn Uống",
             headerTintColor: `${Color.primary}`,
             headerLeft: () => (
-              <SimpleLineIcons
+              <MaterialCommunityIcons
                 name="menu"
                 size={Size.icon}
                 color={`${Color.primary}`}

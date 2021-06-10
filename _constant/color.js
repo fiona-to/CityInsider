@@ -10,7 +10,9 @@
     
 */
 
-export const primary = "#ff7b54";
+export const primary = "#ff7b54"; // pink-orange
+export const secondary = "#96bb7c"; // light-green
 export const border = "#949392";
-export const inActive = "#949392";
+export const inActive = "#949392"; // light gray
 export const text = "#756e6d";
+export const errMsg = "#f44336"; // red

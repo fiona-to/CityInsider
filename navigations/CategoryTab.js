@@ -1,14 +1,8 @@
-import React from "react";
-import { StyleSheet } from "react-native";
-import {
-  createBottomTabNavigator,
-  useBottomTabBarHeight,
-} from "@react-navigation/bottom-tabs";
-import {
-  MaterialCommunityIcons,
-  MaterialIcons,
-  Entypo,
-} from "@expo/vector-icons";
+import React, { useState, useEffect } from "react";
+import firebase from "firebase";
+import { StyleSheet, View, Text } from "react-native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import FoodStack from "./FoodStack";
 import CookingStack from "./CookingStack";
@@ -20,6 +14,70 @@ import * as Color from "../_constant/color";
 const Tab = createBottomTabNavigator();
 
 const CategoryTab = () => {
+  const [categories, setCategories] = useState(null);
+
+  // Fetch data from firestore
+  useEffect(() => {
+    const fetchData = async () => {
+      const list = [];
+      try {
+        const snapshot = await firebase
+          .firestore()
+          .collection("category")
+          .get();
+        snapshot.forEach((doc) => {
+          list.push({ id: doc.id, ...doc.data() });
+        });
+        setCategories(list);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const customizeTabScreen = ({
+    id,
+    name,
+    vietnamese,
+    component,
+    iconName,
+  }) => {
+    const renderComponent = {
+      FoodStack,
+      CookingStack,
+      MarketStack,
+      EntertainmentStack,
+    };
+
+    return (
+      <Tab.Screen
+        key={id}
+        name={vietnamese}
+        component={renderComponent[component]}
+        initialParams={{ catId: id }}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <MaterialCommunityIcons
+              name={iconName}
+              size={Size.icon}
+              color={focused ? Color.primary : Color.inActive}
+            />
+          ),
+        }}
+      />
+    );
+  };
+
+  // TODO: replace by Splash Screen
+  if (!categories) {
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
   return (
     <Tab.Navigator
       tabBarOptions={{
@@ -32,62 +90,7 @@ const CategoryTab = () => {
         },
       }}
     >
-      <Tab.Screen
-        name="Food"
-        component={FoodStack}
-        options={{
-          tabBarLabel: "Ăn Uống",
-          tabBarIcon: ({ focused }) => (
-            <MaterialCommunityIcons
-              name="food"
-              size={Size.icon}
-              color={focused ? Color.primary : Color.inActive}
-            />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Cooking"
-        component={CookingStack}
-        options={{
-          tabBarLabel: "Nấu",
-          tabBarIcon: ({ focused }) => (
-            <MaterialCommunityIcons
-              name="chef-hat"
-              size={Size.icon}
-              color={focused ? Color.primary : Color.inActive}
-            />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Market"
-        component={MarketStack}
-        options={{
-          tabBarLabel: "Đi Chợ",
-          tabBarIcon: ({ focused }) => (
-            <MaterialIcons
-              name="local-grocery-store"
-              size={Size.icon}
-              color={focused ? Color.primary : Color.inActive}
-            />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Entertain"
-        component={EntertainmentStack}
-        options={{
-          tabBarLabel: "Giải Trí",
-          tabBarIcon: ({ focused }) => (
-            <Entypo
-              name="camera"
-              size={Size.icon}
-              color={focused ? Color.primary : Color.inActive}
-            />
-          ),
-        }}
-      />
+      {categories && categories.map((tabInfo) => customizeTabScreen(tabInfo))}
     </Tab.Navigator>
   );
 };

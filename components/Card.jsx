@@ -4,14 +4,14 @@ import { View, Image, Text, StyleSheet, TouchableOpacity } from "react-native";
 import * as Size from "../_constant/size";
 import * as Color from "../_constant/color";
 
-const Card = ({ style, title, imgUrl, handleSelection }) => {
+const Card = ({ style, name, imgUrl, handleSelection }) => {
   return (
     <View style={{ ...style }}>
       <TouchableOpacity onPress={handleSelection} style={styles.cover}>
         <Image style={styles.img} source={{ uri: imgUrl }} />
       </TouchableOpacity>
       <View>
-        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.title}>{name}</Text>
       </View>
     </View>
   );

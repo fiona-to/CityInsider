@@ -1,16 +1,49 @@
-import React from "react";
-import { StyleSheet, View, ScrollView } from "react-native";
+import React, { useState, useEffect } from "react";
+import firebase from "firebase";
+import { StyleSheet, View, Text, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import FoodData from "../dummy-data/food";
 import Card from "../components/Card";
 
 const Food = (props) => {
+  const { catId } = props.route.params;
+  const [food, setFood] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const list = [];
+      try {
+        const snapshot = await firebase
+          .firestore()
+          .collection("node")
+          .where("catType.catId", "==", catId)
+          .get();
+        snapshot.forEach((doc) => {
+          list.push({ id: doc.id, ...doc.data() });
+        });
+        setFood(list);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, [catId]);
+
+  // TODO: replace by Splash Screen
+  if (!food || food.length <= 0) {
+    return (
+      <View>
+        <Text>Loading...</Text>
+      </View>
+    );
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View style={styles.catList}>
-          {FoodData.map((item) => (
+          {food.map((item) => (
             <Card
               style={styles.card}
               key={item.id}
