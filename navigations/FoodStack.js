@@ -12,6 +12,11 @@ import * as Size from "../_constant/size";
 const Stack = createStackNavigator();
 
 const FoodStack = (props) => {
+  // TODO: Multi-languages
+  const foodTitle = "Ăn Uống";
+  const nodeTitle = "Quán Ăn";
+  const detailTitle = "Chi Tiết";
+
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -20,7 +25,7 @@ const FoodStack = (props) => {
         initialParams={{ catId: props.route.params.catId }}
         options={(props) => {
           return {
-            headerTitle: "Ăn Uống",
+            headerTitle: `${foodTitle}`,
             headerTintColor: `${Color.primary}`,
             headerLeft: () => (
               <MaterialCommunityIcons
@@ -40,7 +45,7 @@ const FoodStack = (props) => {
         name="List"
         component={Nodes}
         options={{
-          headerTitle: "Quán Ăn",
+          headerTitle: `${nodeTitle}`,
           headerTintColor: `${Color.primary}`,
         }}
       />
@@ -48,7 +53,7 @@ const FoodStack = (props) => {
         name="Detail"
         component={NodeDetail}
         options={{
-          headerTitle: "Chi Tiết",
+          headerTitle: `${detailTitle}`,
           headerTintColor: `${Color.primary}`,
         }}
       />

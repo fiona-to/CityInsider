@@ -1,25 +1,22 @@
 import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import { Entypo } from "@expo/vector-icons";
 
 import * as Color from "../_constant/color";
 import * as Size from "../_constant/size";
+import CustomRatingStar from "./CustomRatingStar";
 
-const NodeCard = ({ title, imgUrl, location, style, handleSection }) => {
+const NodeCard = (props) => {
+  const { name, imgUrl, address, rating, handleSection } = props;
   return (
-    <View style={{ ...style }}>
-      <TouchableOpacity style={styles.img} onPress={handleSection}>
-        <Image style={styles.tinyPhoto} source={{ uri: imgUrl }} />
+    <View style={styles.container}>
+      <TouchableOpacity style={styles.img__box} onPress={handleSection}>
+        <Image style={styles.img__tinyPhoto} source={{ uri: imgUrl }} />
       </TouchableOpacity>
-      <View>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.address}>{location.substr(0, 22)}..</Text>
-        <View style={styles.star}>
-          <Entypo name="star" size={16} color={`${Color.primary}`} />
-          <Entypo name="star" size={16} color={`${Color.primary}`} />
-          <Entypo name="star" size={16} color={`${Color.primary}`} />
-          <Entypo name="star" size={16} color={`${Color.primary}`} />
-          <Entypo name="star" size={16} color={`${Color.primary}`} />
+      <View style={styles.info__box}>
+        <Text style={styles.info__title}>{name}</Text>
+        <Text style={styles.info__address}>{address.substr(0, 22)}..</Text>
+        <View style={styles.info__star}>
+          <CustomRatingStar rating={rating} size={18} />
         </View>
       </View>
     </View>
@@ -27,7 +24,14 @@ const NodeCard = ({ title, imgUrl, location, style, handleSection }) => {
 };
 
 const styles = StyleSheet.create({
-  img: {
+  container: {
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    minWidth: 150,
+    maxWidth: "48%",
+  },
+  img__box: {
     shadowColor: `${Color.border}`,
     shadowOpacity: 1,
     shadowOffset: {
@@ -35,25 +39,31 @@ const styles = StyleSheet.create({
       height: 3,
     },
   },
-  title: {
+  img__tinyPhoto: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 10,
+    overflow: "hidden",
+  },
+  info__box: {
+    marginBottom: 16,
+  },
+  info__title: {
     color: `${Color.text}`,
     fontSize: Size.header_3,
     fontWeight: `bold`,
     marginTop: 10,
   },
-  address: {
+  info__address: {
     color: `${Color.text}`,
     fontSize: Size.text,
+    marginTop: 10,
   },
-  star: {
+  info__star: {
     flex: 1,
     flexDirection: "row",
     justifyContent: "flex-start",
-  },
-  tinyPhoto: {
-    width: 168,
-    height: 130,
-    borderRadius: 10,
+    marginTop: 10,
   },
 });
 

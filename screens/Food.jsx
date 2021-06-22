@@ -3,12 +3,12 @@ import firebase from "firebase";
 import { StyleSheet, View, Text, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import FoodData from "../dummy-data/food";
 import Card from "../components/Card";
 
 const Food = (props) => {
   const { catId } = props.route.params;
   const [food, setFood] = useState([]);
+
   useEffect(() => {
     const fetchData = async () => {
       const list = [];
@@ -18,7 +18,7 @@ const Food = (props) => {
           .collection("node")
           .where("catType.catId", "==", catId)
           .get();
-        snapshot.forEach((doc) => {
+        (await snapshot).forEach((doc) => {
           list.push({ id: doc.id, ...doc.data() });
         });
         setFood(list);
@@ -45,11 +45,10 @@ const Food = (props) => {
         <View style={styles.catList}>
           {food.map((item) => (
             <Card
-              style={styles.card}
               key={item.id}
               {...item}
               handleSelection={() =>
-                props.navigation.navigate("List", { catId: item.id })
+                props.navigation.navigate("List", { parentId: item.id })
               }
             />
           ))}
@@ -67,12 +66,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     justifyContent: "space-around",
-  },
-  card: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "center",
-    marginVertical: 15,
   },
 });
 

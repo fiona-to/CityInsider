@@ -1,21 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import firebase from "firebase";
 import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import NodeData from "../dummy-data/node";
 import NodeCard from "../components/NodeCard";
 
 const Nodes = ({ route, navigation }) => {
-  const { catId } = route.params;
-  const filterNodes = NodeData.filter((item) => item.catId === catId);
+  const { parentId } = route.params;
+  const [node, setNode] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const list = [];
+        const snapshot = firebase
+          .firestore()
+          .collection("detail")
+          .where("nodeType.nodeId", "==", parentId)
+          .get();
+        (await snapshot).forEach((doc) => {
+          list.push({ id: doc.id, ...doc.data() });
+        });
+        setNode(list);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, [parentId]);
 
   const renderNodeData = () => {
-    if (filterNodes.length > 0) {
-      return filterNodes.map((item) => (
+    if (node && node.length > 0) {
+      return node.map((item) => (
         <NodeCard
           key={item.id}
           {...item}
-          style={styles.node}
           handleSection={() =>
             navigation.navigate("Detail", {
               data: item,
@@ -39,20 +59,13 @@ const Nodes = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 20,
-    marginVertical: 13,
+    marginHorizontal: 10,
   },
   content: {
     flex: 1,
     flexDirection: "row",
-    justifyContent: "space-around",
     flexWrap: "wrap",
-  },
-  node: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "flex-start",
-    minWidth: "45%",
+    justifyContent: "space-between",
   },
 });
 

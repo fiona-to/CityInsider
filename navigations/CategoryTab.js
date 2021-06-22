@@ -43,6 +43,8 @@ const CategoryTab = () => {
     component,
     iconName,
   }) => {
+    // TODO: Multi-languages
+    const langTitle = vietnamese;
     const renderComponent = {
       FoodStack,
       CookingStack,
@@ -53,10 +55,11 @@ const CategoryTab = () => {
     return (
       <Tab.Screen
         key={id}
-        name={vietnamese}
+        name={name}
         component={renderComponent[component]}
         initialParams={{ catId: id }}
         options={{
+          tabBarLabel: `${langTitle}`,
           tabBarIcon: ({ focused }) => (
             <MaterialCommunityIcons
               name={iconName}

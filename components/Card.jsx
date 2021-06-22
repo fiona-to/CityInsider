@@ -4,21 +4,30 @@ import { View, Image, Text, StyleSheet, TouchableOpacity } from "react-native";
 import * as Size from "../_constant/size";
 import * as Color from "../_constant/color";
 
-const Card = ({ style, name, imgUrl, handleSelection }) => {
+const Card = ({ vietnamese, imgUrl, handleSelection }) => {
+  // TODO: Multi-languages
+  const langTitle = vietnamese;
+
   return (
-    <View style={{ ...style }}>
-      <TouchableOpacity onPress={handleSelection} style={styles.cover}>
-        <Image style={styles.img} source={{ uri: imgUrl }} />
+    <View style={styles.container}>
+      <TouchableOpacity style={styles.img__cover} onPress={handleSelection}>
+        <Image style={styles.img__photo} source={{ uri: imgUrl }} />
       </TouchableOpacity>
       <View>
-        <Text style={styles.title}>{name}</Text>
+        <Text style={styles.title}>{langTitle}</Text>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  cover: {
+  container: {
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "center",
+    marginVertical: 15,
+  },
+  img__cover: {
     shadowColor: `${Color.border}`,
     shadowOpacity: 1,
     shadowOffset: {
@@ -26,10 +35,11 @@ const styles = StyleSheet.create({
       height: 3,
     },
   },
-  img: {
-    width: 330,
-    height: 136,
+  img__photo: {
+    width: 380,
+    height: 160,
     borderRadius: 20,
+    overflow: "hidden",
   },
   title: {
     fontSize: Size.header_4,
