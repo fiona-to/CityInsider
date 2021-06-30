@@ -1,5 +1,7 @@
-import React from "react";
-import { StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { connect } from "react-redux";
+import { toggleLanguage } from "../redux/actions/userActions";
+import { View, Text, Switch, StyleSheet } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
@@ -12,10 +14,17 @@ import * as Size from "../_constant/size";
 const Stack = createStackNavigator();
 
 const FoodStack = (props) => {
+  const [isVN, setIsVN] = useState(false);
+
   // TODO: Multi-languages
   const foodTitle = "Ăn Uống";
   const nodeTitle = "Quán Ăn";
   const detailTitle = "Chi Tiết";
+
+  const toggleSwitch = () => {
+    setIsVN((previousState) => !previousState);
+    props.toggleLanguage();
+  };
 
   return (
     <Stack.Navigator>
@@ -37,6 +46,22 @@ const FoodStack = (props) => {
                   props.navigation.toggleDrawer();
                 }}
               />
+            ),
+            headerRight: () => (
+              <View style={styles.header_right}>
+                <Text style={styles.header_right__text}>VN</Text>
+                <Switch
+                  trackColor={{
+                    true: `${Color.primary}`,
+                    false: `${Color.inActive}`,
+                  }}
+                  thumbColor={isVN ? "#f5dd4b" : `${Color.inActive}`}
+                  ios_backgroundColor="#3e3e3e"
+                  style={styles.header_right__switch}
+                  onValueChange={toggleSwitch}
+                  value={isVN}
+                />
+              </View>
             ),
           };
         }}
@@ -65,6 +90,26 @@ const styles = StyleSheet.create({
   menu: {
     marginLeft: 20,
   },
+  header_right: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 10,
+  },
+  header_right__text: {
+    fontSize: Size.header_3,
+    color: Color.primary,
+  },
+  header_right__switch: {
+    transform: [{ scaleX: 0.8 }, { scaleY: 0.8 }],
+  },
 });
 
-export default FoodStack;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    toggleLanguage: () => dispatch(toggleLanguage()),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(FoodStack);

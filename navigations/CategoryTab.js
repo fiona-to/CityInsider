@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import firebase from "firebase";
+import { connect, conntect } from "react-redux";
 import { StyleSheet, View, Text } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -13,7 +14,7 @@ import * as Color from "../_constant/color";
 
 const Tab = createBottomTabNavigator();
 
-const CategoryTab = () => {
+const CategoryTab = (props) => {
   const [categories, setCategories] = useState(null);
 
   // Fetch data from firestore
@@ -44,7 +45,7 @@ const CategoryTab = () => {
     iconName,
   }) => {
     // TODO: Multi-languages
-    const langTitle = vietnamese;
+    const langTitle = props.isVN ? vietnamese : name;
     const renderComponent = {
       FoodStack,
       CookingStack,
@@ -61,11 +62,13 @@ const CategoryTab = () => {
         options={{
           tabBarLabel: `${langTitle}`,
           tabBarIcon: ({ focused }) => (
-            <MaterialCommunityIcons
-              name={iconName}
-              size={Size.icon}
-              color={focused ? Color.primary : Color.inActive}
-            />
+            <View style={focused ? styles.selectedTab : null}>
+              <MaterialCommunityIcons
+                name={iconName}
+                size={Size.icon}
+                color={focused ? Color.primary : Color.inActive}
+              />
+            </View>
           ),
         }}
       />
@@ -102,6 +105,19 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 11,
   },
+  selectedTab: {
+    borderTopColor: `${Color.primary}`,
+    borderTopWidth: 4,
+    borderTopStartRadius: 2,
+    borderTopEndRadius: 2,
+    paddingTop: 3,
+  },
 });
 
-export default CategoryTab;
+const mapStateToProps = (state) => {
+  return {
+    isVN: state.user.isVN,
+  };
+};
+
+export default connect(mapStateToProps)(CategoryTab);

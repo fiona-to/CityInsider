@@ -7,7 +7,7 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 import { fbConfig } from "./config/fbConfig";
 import { Provider } from "react-redux";
-import { createStore, compose, applyMiddleware } from "redux";
+import { createStore, applyMiddleware } from "redux";
 import RootReducer from "./redux/reducers/rootReducer";
 import thunk from "redux-thunk";
 
@@ -20,7 +20,7 @@ if (firebase.apps.length === 0) {
   }
 }
 
-const store = createStore(RootReducer, compose(applyMiddleware(thunk)));
+const store = createStore(RootReducer, applyMiddleware(thunk));
 
 // upgraded expo to 41.0.1 and react-native-screens to 3.0.0 ~~removed warning
 export default function App() {

@@ -14,7 +14,7 @@ const NodeCard = (props) => {
       </TouchableOpacity>
       <View style={styles.info__box}>
         <Text style={styles.info__title}>{name}</Text>
-        <Text style={styles.info__address}>{address.substr(0, 22)}..</Text>
+        <Text style={styles.info__address}>{address.substr(0, 22)}...</Text>
         <View style={styles.info__star}>
           <CustomRatingStar rating={rating} size={18} />
         </View>

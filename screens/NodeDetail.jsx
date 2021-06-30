@@ -31,16 +31,20 @@ const NodeDetail = ({ route }) => {
           <View>
             <Text style={styles.info__header}>Address: </Text>
           </View>
-          <View>
-            <Text style={styles.info__detail}>{address}</Text>
+          <View style={styles.wrapBox}>
+            <Text style={[styles.info__detail, styles.wrapBox__content]}>
+              {address}
+            </Text>
           </View>
         </View>
         <View style={styles.note}>
           <View>
             <Text style={styles.info__header}>Notes: </Text>
           </View>
-          <View>
-            <Text style={styles.info__detail}>{description}</Text>
+          <View style={styles.wrapBox}>
+            <Text style={[styles.info__detail, styles.wrapBox__content]}>
+              {description}
+            </Text>
           </View>
         </View>
       </ScrollView>
@@ -51,6 +55,13 @@ const NodeDetail = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  wrapBox: {
+    flex: 1,
+    flexDirection: "row",
+  },
+  wrapBox__content: {
+    flexShrink: 1, // content to be shrink, expanding for whole row
   },
   info__header: {
     color: `${Color.text}`,
@@ -68,7 +79,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: Size.header_6,
     textAlign: "center",
-    marginTop: 10,
+    marginTop: 22,
   },
   review: {
     flex: 1,
