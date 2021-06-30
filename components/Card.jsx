@@ -1,12 +1,13 @@
 import React from "react";
+import { connect } from "react-redux";
 import { View, Image, Text, StyleSheet, TouchableOpacity } from "react-native";
 
 import * as Size from "../_constant/size";
 import * as Color from "../_constant/color";
 
-const Card = ({ vietnamese, imgUrl, handleSelection }) => {
+const Card = ({ name, vietnamese, imgUrl, handleSelection, isVN }) => {
   // TODO: Multi-languages
-  const langTitle = vietnamese;
+  const langTitle = isVN ? vietnamese : name;
 
   return (
     <View style={styles.container}>
@@ -49,4 +50,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Card;
+const mapStateToProps = (state) => {
+  return {
+    isVN: state.user.isVN,
+  };
+};
+
+export default connect(mapStateToProps)(Card);

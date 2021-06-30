@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import { View, Text, Image, ScrollView, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomRatingStar from "../components/CustomRatingStar";
@@ -6,9 +7,15 @@ import CustomRatingStar from "../components/CustomRatingStar";
 import * as Color from "../_constant/color";
 import * as Size from "../_constant/size";
 
-const NodeDetail = ({ route }) => {
-  const { data } = route.params;
+const NodeDetail = (props) => {
+  const { data } = props.route.params;
   const { name, imgUrl, address, rating, description } = data;
+  const { isVN } = props;
+  const multiLang = {
+    reivew: isVN ? "Đánh giá" : "Review",
+    address: isVN ? "Địa chỉ" : "Address",
+    note: isVN ? "Ghi chú" : "Notes",
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -21,7 +28,7 @@ const NodeDetail = ({ route }) => {
         </View>
         <View style={styles.review}>
           <View>
-            <Text style={styles.info__header}>Review:</Text>
+            <Text style={styles.info__header}>{multiLang.reivew}:</Text>
           </View>
           <View style={styles.review__stars}>
             <CustomRatingStar rating={rating} size={18} />
@@ -29,7 +36,7 @@ const NodeDetail = ({ route }) => {
         </View>
         <View style={styles.address}>
           <View>
-            <Text style={styles.info__header}>Address: </Text>
+            <Text style={styles.info__header}>{multiLang.address}: </Text>
           </View>
           <View style={styles.wrapBox}>
             <Text style={[styles.info__detail, styles.wrapBox__content]}>
@@ -39,7 +46,7 @@ const NodeDetail = ({ route }) => {
         </View>
         <View style={styles.note}>
           <View>
-            <Text style={styles.info__header}>Notes: </Text>
+            <Text style={styles.info__header}>{multiLang.note}: </Text>
           </View>
           <View style={styles.wrapBox}>
             <Text style={[styles.info__detail, styles.wrapBox__content]}>
@@ -108,4 +115,10 @@ const styles = StyleSheet.create({
   },
 });
 
-export default NodeDetail;
+const mapStateToProps = (state) => {
+  return {
+    isVN: state.user.isVN,
+  };
+};
+
+export default connect(mapStateToProps)(NodeDetail);

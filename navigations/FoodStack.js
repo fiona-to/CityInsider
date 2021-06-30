@@ -17,9 +17,20 @@ const FoodStack = (props) => {
   const [isVN, setIsVN] = useState(false);
 
   // TODO: Multi-languages
-  const foodTitle = "Ăn Uống";
-  const nodeTitle = "Quán Ăn";
-  const detailTitle = "Chi Tiết";
+  const multiLang = {
+    food: {
+      eng: "Food Drink",
+      vn: "Ăn Uống",
+    },
+    node: {
+      eng: "Places",
+      vn: "Quán Ăn",
+    },
+    detail: {
+      eng: "Details",
+      vn: "Chi Tiết",
+    },
+  };
 
   const toggleSwitch = () => {
     setIsVN((previousState) => !previousState);
@@ -34,7 +45,9 @@ const FoodStack = (props) => {
         initialParams={{ catId: props.route.params.catId }}
         options={(props) => {
           return {
-            headerTitle: `${foodTitle}`,
+            headerTitle: isVN
+              ? `${multiLang.food.vn}`
+              : `${multiLang.food.eng}`,
             headerTintColor: `${Color.primary}`,
             headerLeft: () => (
               <MaterialCommunityIcons
@@ -70,7 +83,7 @@ const FoodStack = (props) => {
         name="List"
         component={Nodes}
         options={{
-          headerTitle: `${nodeTitle}`,
+          headerTitle: isVN ? `${multiLang.node.vn}` : `${multiLang.node.eng}`,
           headerTintColor: `${Color.primary}`,
         }}
       />
@@ -78,7 +91,9 @@ const FoodStack = (props) => {
         name="Detail"
         component={NodeDetail}
         options={{
-          headerTitle: `${detailTitle}`,
+          headerTitle: isVN
+            ? `${multiLang.detail.vn}`
+            : `${multiLang.detail.eng}`,
           headerTintColor: `${Color.primary}`,
         }}
       />

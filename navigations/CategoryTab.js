@@ -58,7 +58,7 @@ const CategoryTab = (props) => {
         key={id}
         name={name}
         component={renderComponent[component]}
-        initialParams={{ catId: id }}
+        initialParams={{ catId: id, name: name, vietnamese: vietnamese }}
         options={{
           tabBarLabel: `${langTitle}`,
           tabBarIcon: ({ focused }) => (
