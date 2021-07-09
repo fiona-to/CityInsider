@@ -17,6 +17,7 @@ const Nodes = ({ route, navigation }) => {
           .firestore()
           .collection("detail")
           .where("nodeType.nodeId", "==", parentId)
+          .where("enable", "==", true)
           .get();
         (await snapshot).forEach((doc) => {
           list.push({ id: doc.id, ...doc.data() });

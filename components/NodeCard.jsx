@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   },
   img__tinyPhoto: {
     width: "100%",
-    height: "100%",
+    height: 130,
     borderRadius: 10,
     overflow: "hidden",
   },

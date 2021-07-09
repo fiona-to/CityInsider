@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import { connect } from "react-redux";
-import { toggleLanguage } from "../redux/actions/userActions";
 import { View, Text, Switch, StyleSheet } from "react-native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -8,15 +7,19 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Food from "../screens/Food";
 import Nodes from "../screens/Nodes";
 import NodeDetail from "../screens/NodeDetail";
+import { toggleLanguage } from "../redux/actions/userActions";
 import * as Color from "../_constant/color";
 import * as Size from "../_constant/size";
 
 const Stack = createStackNavigator();
 
+/**
+ *  Functional Component: FoodStack
+ */
 const FoodStack = (props) => {
-  const [isVN, setIsVN] = useState(false);
+  const { isVN, toggleLanguage } = props;
 
-  // TODO: Multi-languages
+  // Multi-languages
   const multiLang = {
     food: {
       eng: "Food Drink",
@@ -24,7 +27,7 @@ const FoodStack = (props) => {
     },
     node: {
       eng: "Places",
-      vn: "Quán Ăn",
+      vn: "Địa Điểm",
     },
     detail: {
       eng: "Details",
@@ -33,8 +36,7 @@ const FoodStack = (props) => {
   };
 
   const toggleSwitch = () => {
-    setIsVN((previousState) => !previousState);
-    props.toggleLanguage();
+    toggleLanguage();
   };
 
   return (
@@ -121,10 +123,16 @@ const styles = StyleSheet.create({
   },
 });
 
+const mapStateToProps = (state) => {
+  return {
+    isVN: state.user.isVN,
+  };
+};
+
 const mapDispatchToProps = (dispatch) => {
   return {
     toggleLanguage: () => dispatch(toggleLanguage()),
   };
 };
 
-export default connect(null, mapDispatchToProps)(FoodStack);
+export default connect(mapStateToProps, mapDispatchToProps)(FoodStack);

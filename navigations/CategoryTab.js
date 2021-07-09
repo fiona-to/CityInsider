@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import firebase from "firebase";
-import { connect, conntect } from "react-redux";
+import { connect } from "react-redux";
 import { StyleSheet, View, Text } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -19,22 +19,27 @@ const CategoryTab = (props) => {
 
   // Fetch data from firestore
   useEffect(() => {
+    let isSubscribed = true;
     const fetchData = async () => {
       const list = [];
       try {
         const snapshot = await firebase
           .firestore()
           .collection("category")
+          .orderBy("sort")
           .get();
         snapshot.forEach((doc) => {
           list.push({ id: doc.id, ...doc.data() });
         });
-        setCategories(list);
+        if (isSubscribed) setCategories(list);
       } catch (error) {
         console.log(error);
       }
     };
     fetchData();
+
+    // clean up
+    return () => (isSubscribed = false);
   }, []);
 
   const customizeTabScreen = ({
@@ -44,7 +49,7 @@ const CategoryTab = (props) => {
     component,
     iconName,
   }) => {
-    // TODO: Multi-languages
+    // Multi-languages
     const langTitle = props.isVN ? vietnamese : name;
     const renderComponent = {
       FoodStack,
@@ -58,7 +63,7 @@ const CategoryTab = (props) => {
         key={id}
         name={name}
         component={renderComponent[component]}
-        initialParams={{ catId: id, name: name, vietnamese: vietnamese }}
+        initialParams={{ catId: id }}
         options={{
           tabBarLabel: `${langTitle}`,
           tabBarIcon: ({ focused }) => (

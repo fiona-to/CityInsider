@@ -10,6 +10,7 @@ const Food = (props) => {
   const [food, setFood] = useState([]);
 
   useEffect(() => {
+    let isSubscribed = true;
     const fetchData = async () => {
       const list = [];
       try {
@@ -17,17 +18,21 @@ const Food = (props) => {
           .firestore()
           .collection("node")
           .where("catType.catId", "==", catId)
+          .where("enable", "==", true)
           .get();
         (await snapshot).forEach((doc) => {
           list.push({ id: doc.id, ...doc.data() });
         });
-        setFood(list);
+        if (isSubscribed) setFood(list);
       } catch (error) {
         console.log(error);
       }
     };
 
     fetchData();
+
+    // Clean up
+    return () => (isSubscribed = false);
   }, [catId]);
 
   // TODO: replace by Splash Screen
@@ -43,15 +48,16 @@ const Food = (props) => {
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View style={styles.catList}>
-          {food.map((item) => (
-            <Card
-              key={item.id}
-              {...item}
-              handleSelection={() =>
-                props.navigation.navigate("List", { parentId: item.id })
-              }
-            />
-          ))}
+          {food &&
+            food.map((item) => (
+              <Card
+                key={item.id}
+                {...item}
+                handleSelection={() =>
+                  props.navigation.navigate("List", { parentId: item.id })
+                }
+              />
+            ))}
         </View>
       </ScrollView>
     </SafeAreaView>
