@@ -5,16 +5,18 @@ import { StyleSheet, View, Text } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import FoodStack from "./FoodStack";
-import CookingStack from "./CookingStack";
-import MarketStack from "./MarketStack";
-import EntertainmentStack from "./EntertainmentStack";
+import CategoryTabStack from "./CategoryTabStack";
 import * as Size from "../_constant/size";
 import * as Color from "../_constant/color";
 
 const Tab = createBottomTabNavigator();
 
-const CategoryTab = (props) => {
+/**
+ *  Functional Component: CategoryTabs
+ *  Purpose: render 04 tabs (FoodDrink, Entertain, Market, Cook)
+ *
+ */
+const CategoryTabs = (props) => {
   const [categories, setCategories] = useState(null);
 
   // Fetch data from firestore
@@ -42,6 +44,7 @@ const CategoryTab = (props) => {
     return () => (isSubscribed = false);
   }, []);
 
+  // Customize each sub-tab
   const customizeTabScreen = ({
     id,
     name,
@@ -51,19 +54,13 @@ const CategoryTab = (props) => {
   }) => {
     // Multi-languages
     const langTitle = props.isVN ? vietnamese : name;
-    const renderComponent = {
-      FoodStack,
-      CookingStack,
-      MarketStack,
-      EntertainmentStack,
-    };
 
     return (
       <Tab.Screen
         key={id}
         name={name}
-        component={renderComponent[component]}
-        initialParams={{ catId: id }}
+        component={CategoryTabStack}
+        initialParams={{ catId: id, name, vietnamese }}
         options={{
           tabBarLabel: `${langTitle}`,
           tabBarIcon: ({ focused }) => (
@@ -89,6 +86,7 @@ const CategoryTab = (props) => {
     );
   }
 
+  // Rendering
   return (
     <Tab.Navigator
       tabBarOptions={{
@@ -106,6 +104,7 @@ const CategoryTab = (props) => {
   );
 };
 
+// Styling
 const styles = StyleSheet.create({
   label: {
     fontSize: 11,
@@ -119,10 +118,11 @@ const styles = StyleSheet.create({
   },
 });
 
+// Redux: map state to props
 const mapStateToProps = (state) => {
   return {
     isVN: state.user.isVN,
   };
 };
 
-export default connect(mapStateToProps)(CategoryTab);
+export default connect(mapStateToProps)(CategoryTabs);

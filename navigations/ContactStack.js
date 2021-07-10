@@ -4,6 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { SimpleLineIcons } from "@expo/vector-icons";
 
 import Contact from "../screens/Contact";
+import HeaderMenuIcon from "../components/HeaderMenuIcon";
 import * as Color from "../_constant/color";
 import * as Size from "../_constant/size";
 
@@ -19,15 +20,7 @@ const ContactStack = () => {
           return {
             headerTintColor: `${Color.primary}`,
             headerLeft: () => (
-              <SimpleLineIcons
-                name="menu"
-                size={Size.icon}
-                color={`${Color.primary}`}
-                style={styles.menu}
-                onPress={() => {
-                  props.navigation.toggleDrawer();
-                }}
-              />
+              <HeaderMenuIcon toggleDrawer={props.navigation.toggleDrawer} />
             ),
           };
         }}

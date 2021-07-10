@@ -5,10 +5,18 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import Card from "../components/Card";
 
-const Entertainment = (props) => {
+/**
+ *  Functional Component: MainScreen
+ *  Purpose: render main screen for each individual tab
+ *
+ *  Notes: There are 04 tabs (FoodDrink, Entertain, Market, Cook).
+ *  Each tab has a main screen. A main screen has a list of category.
+ */
+const MainScreen = (props) => {
   const { catId } = props.route.params;
-  const [entertain, setEntertain] = useState([]);
+  const [nodes, setNodes] = useState([]);
 
+  // Fetch data from firestore "node" collection
   useEffect(() => {
     let isSubscribed = true;
     const fetchNodeData = async () => {
@@ -23,7 +31,7 @@ const Entertainment = (props) => {
         (await snapshot).forEach((doc) => {
           list.push({ id: doc.id, ...doc.data() });
         });
-        if (isSubscribed) setEntertain(list);
+        if (isSubscribed) setNodes(list);
       } catch (error) {
         console.log(error);
       }
@@ -36,7 +44,7 @@ const Entertainment = (props) => {
   }, [catId]);
 
   // TODO: replace by Splash Screen
-  if (!entertain || entertain.length <= 0) {
+  if (!nodes || nodes.length <= 0) {
     return (
       <View>
         <Text>Loading...</Text>
@@ -44,12 +52,13 @@ const Entertainment = (props) => {
     );
   }
 
+  // Rendering
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
         <View style={styles.catList}>
-          {entertain &&
-            entertain.map((item) => (
+          {nodes &&
+            nodes.map((item) => (
               <Card
                 key={item.id}
                 {...item}
@@ -64,15 +73,16 @@ const Entertainment = (props) => {
   );
 };
 
+// Styling
 const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  catList: {
+  nodesList: {
     flex: 1,
     flexDirection: "column",
     justifyContent: "space-around",
   },
 });
 
-export default Entertainment;
+export default MainScreen;

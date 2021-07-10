@@ -5,8 +5,17 @@ import * as Color from "../_constant/color";
 import * as Size from "../_constant/size";
 import CustomRatingStar from "./CustomRatingStar";
 
+/**
+ *  Functional Component: NodeCard
+ *  Purpose: render list of NodeCard on Nodes
+ *  Input: name, imgUrl, address, rating, handleSection
+ *  Output: <NodeCard />
+ *
+ */
 const NodeCard = (props) => {
   const { name, imgUrl, address, rating, handleSection } = props;
+
+  // Rendering
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.img__box} onPress={handleSection}>
@@ -23,6 +32,7 @@ const NodeCard = (props) => {
   );
 };
 
+// Styling
 const styles = StyleSheet.create({
   container: {
     flex: 1,

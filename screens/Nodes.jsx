@@ -5,10 +5,20 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import NodeCard from "../components/NodeCard";
 
+/**
+ *  Functional Component: Nodes
+ *  Purpose: render nodes.
+ *
+ *  Notes: Tab has a list of category. Each category
+ *  also has list of places/restaurants. Nodes are places/restaurants.
+ *  Examples: Tab FoodDrink has list of category (Snack, Grill, Noodle).
+ *  A "Noodle" has lots of places/restaurants in different areas.
+ */
 const Nodes = ({ route, navigation }) => {
   const { parentId } = route.params;
   const [node, setNode] = useState([]);
 
+  // Fetching data from firestore's "detail" collection
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -45,9 +55,10 @@ const Nodes = ({ route, navigation }) => {
         />
       ));
     }
-    return <Text>More locations are coming...</Text>;
+    return <Text>Coming soon...</Text>;
   };
 
+  // Rendering
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -57,6 +68,7 @@ const Nodes = ({ route, navigation }) => {
   );
 };
 
+// Styling
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -7,6 +7,11 @@ import CustomRatingStar from "../components/CustomRatingStar";
 import * as Color from "../_constant/color";
 import * as Size from "../_constant/size";
 
+/**
+ *  Functional Component: NodeDetail
+ *  Purpose: render node's details (address, rating, description, ...)
+ *
+ */
 const NodeDetail = (props) => {
   const { data } = props.route.params;
   const { name, imgUrl, address, rating, description } = data;
@@ -17,6 +22,7 @@ const NodeDetail = (props) => {
     note: isVN ? "Ghi chú" : "Notes",
   };
 
+  // Rendering
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView>
@@ -59,6 +65,7 @@ const NodeDetail = (props) => {
   );
 };
 
+// Styling
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -115,6 +122,7 @@ const styles = StyleSheet.create({
   },
 });
 
+// Redux: map state to props
 const mapStateToProps = (state) => {
   return {
     isVN: state.user.isVN,

@@ -1,7 +1,7 @@
 import React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
-import CategoryTab from "./CategoryTab";
+import CategoryTabs from "./CategoryTabs";
 import ContactStack from "./ContactStack";
 import * as Color from "../_constant/color";
 
@@ -14,7 +14,7 @@ const MainNavigator = () => {
         activeTintColor: `${Color.primary}`,
       }}
     >
-      <Drawer.Screen name="Atlanta" component={CategoryTab} />
+      <Drawer.Screen name="Atlanta" component={CategoryTabs} />
       <Drawer.Screen name="Contact" component={ContactStack} />
     </Drawer.Navigator>
   );

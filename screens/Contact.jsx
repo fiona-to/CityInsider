@@ -16,6 +16,10 @@ import { Foundation } from "@expo/vector-icons";
 import * as Color from "../_constant/color";
 import * as Size from "../_constant/size";
 
+/**
+ *  Functional Component: Contact
+ *  Purpose: render author's contact includes email, city
+ */
 const Contact = () => {
   return (
     <SafeAreaView style={styles.container}>
@@ -25,8 +29,7 @@ const Contact = () => {
             <Image
               style={styles.background}
               source={{
-                uri:
-                  "https://res.cloudinary.com/giato/image/upload/v1613753926/contact_bg_n8q4h9.jpg",
+                uri: "https://res.cloudinary.com/giato/image/upload/v1613753926/contact_bg_n8q4h9.jpg",
               }}
             />
           </View>
@@ -34,8 +37,7 @@ const Contact = () => {
             <Image
               style={styles.photo}
               source={{
-                uri:
-                  "https://res.cloudinary.com/giato/image/upload/v1613755960/dog_small_d6waiv.png",
+                uri: "https://res.cloudinary.com/giato/image/upload/v1613755960/dog_small_d6waiv.png",
               }}
             />
           </View>

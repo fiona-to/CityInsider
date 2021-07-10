@@ -5,10 +5,18 @@ import { View, Image, Text, StyleSheet, TouchableOpacity } from "react-native";
 import * as Size from "../_constant/size";
 import * as Color from "../_constant/color";
 
+/**
+ *  Functional Component: Card
+ *  Purpose: render list of cards on MainScreen
+ *  Input: name, vietnamese, imgUrl, handleSelection, isVN
+ *  Output: <Card />
+ *
+ */
 const Card = ({ name, vietnamese, imgUrl, handleSelection, isVN }) => {
   // TODO: Multi-languages
   const langTitle = isVN ? vietnamese : name;
 
+  // Rendering
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.img__cover} onPress={handleSelection}>
@@ -21,6 +29,7 @@ const Card = ({ name, vietnamese, imgUrl, handleSelection, isVN }) => {
   );
 };
 
+// Styling
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -50,6 +59,7 @@ const styles = StyleSheet.create({
   },
 });
 
+// Redux: map state to props
 const mapStateToProps = (state) => {
   return {
     isVN: state.user.isVN,
