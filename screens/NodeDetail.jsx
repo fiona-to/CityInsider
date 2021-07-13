@@ -1,6 +1,14 @@
 import React from "react";
 import { connect } from "react-redux";
-import { View, Text, Image, ScrollView, StyleSheet } from "react-native";
+import MapView, { Marker } from "react-native-maps";
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Dimensions,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomRatingStar from "../components/CustomRatingStar";
 
@@ -59,6 +67,22 @@ const NodeDetail = (props) => {
               {description}
             </Text>
           </View>
+        </View>
+        <View style={styles.container__map}>
+          <MapView
+            style={styles.map}
+            initialRegion={{
+              latitude: 33.749,
+              longitude: -84.388,
+            }}
+          >
+            <Marker
+              coordinate={{
+                latitude: 33.749,
+                longitude: -84.388,
+              }}
+            />
+          </MapView>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -119,6 +143,17 @@ const styles = StyleSheet.create({
   photo: {
     width: "100%",
     height: 220,
+  },
+  container__map: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+    marginVertical: 20,
+  },
+  map: {
+    width: Dimensions.get("window").width,
+    height: 200,
   },
 });
 

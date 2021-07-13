@@ -18,6 +18,7 @@ const Stack = createStackNavigator();
  *
  *  Note: There are 04 tabs (FoodDrink, Entertain, Market, Cook).
  *  Each tab is a stack navigator seperately.
+ *  Each stack navigator has 03 levels: Main Screen -> Nodes -> Node Detail.
  */
 const CategoryTabStack = (props) => {
   const { isVN, toggleLanguage } = props;

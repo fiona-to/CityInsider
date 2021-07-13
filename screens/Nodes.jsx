@@ -20,6 +20,8 @@ const Nodes = ({ route, navigation }) => {
 
   // Fetching data from firestore's "detail" collection
   useEffect(() => {
+    let isSubscribed = true;
+
     const fetchData = async () => {
       try {
         const list = [];
@@ -32,13 +34,16 @@ const Nodes = ({ route, navigation }) => {
         (await snapshot).forEach((doc) => {
           list.push({ id: doc.id, ...doc.data() });
         });
-        setNode(list);
+        if (isSubscribed) setNode(list);
       } catch (error) {
         console.log(error);
       }
     };
 
     fetchData();
+
+    // Clean up
+    return () => (isSubscribed = false);
   }, [parentId]);
 
   const renderNodeData = () => {

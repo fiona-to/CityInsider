@@ -1,8 +1,11 @@
 import React from "react";
 import { View, Text, Switch, StyleSheet } from "react-native";
+import Flag from "react-native-flags-typescript";
 
 import * as Color from "../_constant/color";
 import * as Size from "../_constant/size";
+
+const JustAFlag = () => <Flag code="VN" size={24} />;
 
 /**
  *  Functional Component: LanguageSwitch
@@ -14,7 +17,8 @@ const LanguageSwitch = (props) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.container__text}>VN</Text>
+      {/* <Text style={styles.container__text}>VN</Text> */}
+      <JustAFlag />
       <Switch
         trackColor={{
           true: `${Color.primary}`,
