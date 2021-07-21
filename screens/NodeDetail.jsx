@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { connect } from "react-redux";
 import MapView, { Marker } from "react-native-maps";
 import {
@@ -6,8 +6,10 @@ import {
   Text,
   Image,
   ScrollView,
+  TouchableOpacity,
   StyleSheet,
   Dimensions,
+  Linking,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomRatingStar from "../components/CustomRatingStar";
@@ -22,13 +24,30 @@ import * as Size from "../_constant/size";
  */
 const NodeDetail = (props) => {
   const { data } = props.route.params;
-  const { name, imgUrl, address, rating, description } = data;
+  const { name, imgUrl, address, rating, description, coordinate } = data;
   const { isVN } = props;
   const multiLang = {
     reivew: isVN ? "Đánh giá" : "Review",
     address: isVN ? "Địa chỉ" : "Address",
     note: isVN ? "Ghi chú" : "Notes",
+    direction: isVN ? "Chỉ Đường" : "Get Directions",
   };
+  const latitude = coordinate.latitude ? coordinate.latitude : 33.749;
+  const longitude = coordinate.longitude ? coordinate.longitude : -84.388;
+  const url = `maps:${latitude},${longitude}?q=${name}`;
+
+  const onGetDirectionPress = useCallback(async () => {
+    // Checking if the link is supported for links with custom URL scheme.
+    const supported = await Linking.canOpenURL(url);
+
+    if (supported) {
+      // Opening the link with some app, if the URL scheme is "http" the web link should be opened
+      // by some browser in the mobile
+      await Linking.openURL(url);
+    } else {
+      Alert.alert(`Don't know how to open this URL: ${url}`);
+    }
+  }, [url]);
 
   // Rendering
   return (
@@ -68,20 +87,28 @@ const NodeDetail = (props) => {
             </Text>
           </View>
         </View>
-        <View style={styles.container__map}>
+        <View style={styles.map__container}>
           <MapView
-            style={styles.map}
+            style={styles.map__screen}
             initialRegion={{
-              latitude: 33.749,
-              longitude: -84.388,
+              latitude: latitude,
+              longitude: longitude,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421,
             }}
           >
             <Marker
               coordinate={{
-                latitude: 33.749,
-                longitude: -84.388,
+                latitude: latitude,
+                longitude: longitude,
               }}
             />
+            <TouchableOpacity
+              style={styles.map__text}
+              onPress={onGetDirectionPress}
+            >
+              <Text>{multiLang.direction}</Text>
+            </TouchableOpacity>
           </MapView>
         </View>
       </ScrollView>
@@ -144,16 +171,25 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 220,
   },
-  container__map: {
+  map__container: {
     flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
     marginVertical: 20,
+    position: "relative",
   },
-  map: {
+  map__screen: {
     width: Dimensions.get("window").width,
     height: 200,
+  },
+  map__text: {
+    backgroundColor: Color.primary,
+    color: Color.inActive,
+    position: "absolute",
+    padding: 10,
+    left: 0,
+    top: 0,
   },
 });
 
